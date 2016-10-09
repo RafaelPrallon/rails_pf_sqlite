@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  data_inicio: 2016-08-28
+  data_fim: 2016-08-28
+  data_hora_inicio: 2016-08-28 21:40:23
+  data_hora_fim: 2016-08-28 21:40:23
+
+two:
+  data_inicio: 2016-08-28
+  data_fim: 2016-08-28
+  data_hora_inicio: 2016-08-28 21:40:23
+  data_hora_fim: 2016-08-28 21:40:23

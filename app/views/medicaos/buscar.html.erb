@@ -1,0 +1,9 @@
+<h1>Gráfico de consumo de energia no período</h1>
+<img src= "<%= Gchart.line(:size => '500x400', 
+        :title => "Consumo no período",
+        :bg => 'efefef',
+        :legend => ['Consumo'],
+        :axis_with_labels => ['x','y'],
+        :axis_labels => [[string_datas],[string_medidas]],
+        :data => array_medidas) %>"></img>
+</br>

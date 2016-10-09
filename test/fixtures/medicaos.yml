@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  dataMedicao: 2016-08-26 20:45:05
+  medida: 1.5
+
+two:
+  dataMedicao: 2016-08-26 20:45:05
+  medida: 1.5

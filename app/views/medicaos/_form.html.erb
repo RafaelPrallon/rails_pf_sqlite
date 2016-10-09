@@ -1,0 +1,25 @@
+<%= form_for(@medicao) do |f| %>
+  <% if @medicao.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@medicao.errors.count, "error") %> prohibited this medicao from being saved:</h2>
+
+      <ul>
+      <% @medicao.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :dataMedicao %><br>
+    <%= f.datetime_select :dataMedicao %>
+  </div>
+  <div class="field">
+    <%= f.label :medida %><br>
+    <%= f.text_field :medida %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,16 @@
+<% id =  @medidor.idLocal %>
+<p>
+  <strong>Estado do medidor:</strong>
+  <% if @medidor.estadoMedidor %>
+    Em Operação
+  <% else %>
+    Fora de operação
+  <% end %>
+</p>
+
+<p>
+  <strong>Local:</strong>
+  <%= Local.find(id).nomeLocal %>
+</p>
+
+<%= link_to 'Back', medidors_path, class: 'btn btn-default' %>

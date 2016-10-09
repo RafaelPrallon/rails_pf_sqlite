@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h4>Abaixo você poderá ver a lista de medidores que fazem parte do projeto monitor</h4>
+
+<table>
+  <thead id="tablehead">
+    <tr>
+      <th>Identificador</th>
+      <th>Estado do medidor</th>
+      <th>Local</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @medidors.each do |medidor| %>
+      <tr>
+        <td><%= medidor.id%></td>
+        <% if medidor.estadoMedidor %>
+          <td> Em operação </td>
+        <% else %>
+          <td> Fora de operação </td>
+        <% end %>
+        <% id = medidor.idLocal %>
+        <td><%= link_to Local.find(id).nomeLocal.to_s, medidor %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Medidor', new_medidor_path %>

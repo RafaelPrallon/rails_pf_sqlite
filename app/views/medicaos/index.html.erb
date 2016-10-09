@@ -1,0 +1,59 @@
+<h1>Listing Medicaos</h1>
+<% data_hora_inicio = Medicao.first.dataMedicao
+   data_hora_fim = Medicao.last.dataMedicao%></br>
+<%= Medicao.where("dataMedicao >= ? AND dataMedicao <= ?", data_hora_inicio, data_hora_fim).length %></br>
+<%= taxa_crescimento = (Medicao.maximum(:medida)/ Medicao.all.length).to_i %>
+</script>
+  <% if data_hora_fim - data_hora_inicio <= 86400 %>
+    <% intervalo_minimo_tempo = 60%>
+    <% formato = '%I:%R'%>
+    <% %>
+  <% elsif data_hora_fim - data_hora_inicio >= 2629800%>
+    <% intervalo_minimo_tempo = 86400%>
+    <% formato = '%d/%m' %>
+  <% else %>
+    <% intervalo_minimo_tempo = 360%>
+    <% formato = '%d/%m %I:%R'%>
+  <% end %>
+  
+  <% i = 0
+      array_medidas = []
+      string_medidas ='0|'
+      string_datas = data_hora_inicio.strftime(formato) << '|'
+      valor_atual = taxa_crescimento%>
+  <%= valor_atual%></br>
+  <% horario_buffer = data_hora_inicio - intervalo_minimo_tempo %>
+  <% Medicao.where("dataMedicao >= ? AND dataMedicao <= ?", data_hora_inicio, data_hora_fim).each do |medicao| %>
+    <% medicao.dataMedicao %>
+    <% medicao.medida %>
+    <%= array_medidas[i] = medicao.medida %>
+    <% if medicao.dataMedicao - horario_buffer <= intervalo_minimo_tempo %>
+      <% if medicao.dataMedicao == data_hora_fim%>
+          <% string_datas = string_datas << data_hora_fim.strftime(formato)<< '|'%>
+      <% string_datas = string_datas << '|'%>
+      <% end %>
+    <% else %>
+      <%= string_datas = string_datas << medicao.dataMedicao.strftime(formato) << '|' %>
+      <% horario_buffer = medicao.dataMedicao.time%>
+    <% end %>
+    <% string_medidas = string_medidas << valor_atual.to_s << ' kW|'%>
+    <% valor_atual += taxa_crescimento%>
+    <%= string_datas %>
+    <% i+=1 %>
+    </br>
+  <% end %>
+</br>
+<p><%= string_datas = string_datas.chomp('|')%><p>
+<p><%= string_medidas = string_medidas.chomp('|')%><p>
+</br>
+</br>
+<img src= "<%= Gchart.line(:size => '500x400', 
+        :title => "Consumo no período",
+        :bg => 'efefef',
+        :legend => ['Consumo'],
+        :axis_with_labels => ['x','y'],
+        :axis_labels => [[string_datas],[string_medidas]],
+        :data => array_medidas) %>"></img>
+</br>    
+
+<%= link_to 'fazer busca', buscas_path %>

@@ -1,0 +1,25 @@
+<%= form_for([@local,@medidor]) do |f| %>
+  <% if @medidor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@medidor.errors.count, "error") %> prohibited this medidor from being saved:</h2>
+
+      <ul>
+      <% @medidor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :estadoMedidor %><br>
+    <%= f.check_box :estadoMedidor %>
+  </div>
+  <div class="field">
+    <%= f.label :idLocal %><br>
+    <%= f.text_field :idLocal %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

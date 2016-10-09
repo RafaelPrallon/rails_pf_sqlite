@@ -1,0 +1,26 @@
+<%= form_for(@busca) do |f| %>
+  <% if @busca.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@busca.errors.count, "error") %> prohibited this busca from being saved:</h2>
+
+      <ul>
+      <% @busca.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :data_inicio %><br>
+    <%= f.text_field :data_inicio, "data-provide" => 'datepicker' %>
+    <% :data_hora_inicio = :data_inicio.to_datetime%>
+  </div>
+  <div class="field">
+    <%= f.label :data_fim, "data-provide" => 'datepicker' %><br>
+    <%= f.text_field :data_fim, %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

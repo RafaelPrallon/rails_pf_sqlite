@@ -1,0 +1,27 @@
+<h1>Consulta de consumo de energia</h1>
+</br>
+<h2>Selecione o intervalo do gráfico</h2>
+
+<%= form_for @buscas.new do |f| %>
+  
+  <div class="field">
+    <%= f.label :data_inicio %><br>
+    <%= f.text_field :data_hora_inicio, "data-provide" => 'datepicker' %>
+    <script type="text/javascript">
+  $('[data-provide~=datepicker]').datepicker({
+    format: 'dd/mm/yyyy'
+  });
+  </script>
+  </div>
+  <div class="field">
+    <%= f.label :data_fim%><br>
+    <%= f.text_field :data_hora_fim, "data-provide" => 'datepicker' %>
+    <script type="text/javascript">
+  $('[data-provide~=datepicker]').datepicker({
+    format: 'dd/mm/yyyy'
+  });
+</script>
+  <div class="actions">
+    <%= f.submit "Buscar", class: 'btn btn-default' %>
+  </div>
+<% end %>

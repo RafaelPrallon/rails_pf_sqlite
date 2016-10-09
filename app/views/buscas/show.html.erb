@@ -1,0 +1,63 @@
+<% if Medicao.where("dataMedicao >= ? AND dataMedicao <= ?", @busca.data_hora_inicio, @busca.data_hora_fim).length == 0%>
+    <h2>Sentimos muito mas, infelizmente, não há medidas de consumo para o dado intervalo</h2>
+<% else %>
+  </script>
+    <% teste = Medicao.where("dataMedicao >= ? AND dataMedicao <= ?", @busca.data_hora_inicio, @busca.data_hora_fim) %>
+      <% titulo = 'Consumo de energia do período de ' << @busca.data_hora_inicio.strftime('%d/%m/%Y') <<' até ' << @busca.data_hora_fim.strftime('%d/%m/%Y') %>
+      <% taxa_crescimento = (teste.maximum(:medida)/ teste.all.length).to_i %>
+      <% @busca.data_hora_fim = @busca.data_hora_fim.end_of_day %>
+      <% if @busca.data_hora_inicio > @busca.data_hora_fim %> 
+        <h1>Intervalo de medição inválido. Tente novamente.</h1>
+      <% else %>
+        <% i = 0
+          array_medidas = []
+          string_datas = ''
+          string_medidas = '0|'
+          valor_atual = taxa_crescimento 
+          valor_maximo = teste.first%>
+        <% if @busca.data_hora_fim - @busca.data_hora_inicio <= 86400 %>
+          <% intervalo_minimo_tempo = 60%>
+          <% formato = '%R'%>
+        <% elsif @busca.data_hora_fim - @busca.data_hora_inicio >= (86400*30)%>
+          <% intervalo_minimo_tempo = 86400%>
+          <% formato = '%d/%m' %>
+        <% else %>
+          <% intervalo_minimo_tempo = 10800%>
+          <% formato = '%d %I:%R'%>
+        <% end %>
+        <% horario_buffer = @busca.data_hora_inicio - 100 %>
+        <% Medicao.where("dataMedicao >= ? AND dataMedicao <= ?", @busca.data_hora_inicio, @busca.data_hora_fim).each do |medicao| %>
+          <% array_medidas[i] = medicao.medida %>
+          <% if medicao.medida > valor_maximo.medida %>
+            <% valor_maximo = medicao %>
+          <% end %>
+          <% if medicao.dataMedicao.time - horario_buffer < intervalo_minimo_tempo %>
+            <% string_datas = string_datas << ' |'%>
+          <% else %>
+            <% string_datas = string_datas << medicao.dataMedicao.strftime(formato) << '|'%>
+            <% horario_buffer = medicao.dataMedicao.time%>
+          <% end %>
+          <% string_medidas = string_medidas << valor_atual.to_s << ' kW|'%>
+          <% valor_atual += taxa_crescimento %>
+          <% string_datas %>
+          <% i+=1 %>
+        <% end %>
+        <% string_datas = string_datas.chomp('|')%>
+        <% string_medidas = string_medidas.chomp('|')%>
+        <% tarifa = taxa_crescimento*0.5 %>
+  <% end %>
+  <div class="page-header">
+      <h3>
+      <%= titulo %><br>
+      </h3>
+    <div>
+      <img src= "<%= Gchart.line(:size => '500x500', :bg => 'f0f8ff',:axis_with_labels => ['x','y'],:axis_labels => [[string_datas],[string_medidas]],:data => array_medidas) %>"></img>  
+      </br>
+      <p>O maior valor medido no intervalo foi de <%= valor_maximo.medida.to_s << 'kW'%>  no dia <%= valor_maximo.dataMedicao.strftime('%d/%m')%> às <%= valor_maximo.dataMedicao.strftime('%R') %> </p>
+      <p>O consumo médio no período foi de <%= taxa_crescimento.to_s << 'kW' %>, o que leva a uma tarifa de <%= 'R$ ' << tarifa.to_s %></p>
+    </div>
+  </div>
+<% end %>
+<div>
+   <%= link_to 'Realizar uma nova consulta', iniciarbusca_path, class: 'btn btn-default' %>
+</div>

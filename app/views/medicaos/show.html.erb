@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Datamedicao:</strong>
+  <%= @medicao.dataMedicao %>
+</p>
+
+<p>
+  <strong>Medida:</strong>
+  <%= @medicao.medida %>
+</p>
+
+<%= link_to 'Edit', edit_medicao_path(@medicao) %> |
+<%= link_to 'Back', medicaos_path %>
